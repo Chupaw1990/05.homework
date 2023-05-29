@@ -1,0 +1,35 @@
+#pragma once
+
+#include <vector>
+#include <algorithm>
+#include <math.h>
+#include "istatistic.h"
+
+class Pct90 : public IStatistics {
+public:
+
+	Pct90() : count{0}
+            {elements.clear();}
+
+	void update(double next) override {
+        count++;
+        elements.push_back(next);
+        std::sort(elements.begin(), elements.end());
+	}
+
+	double eval() const override {
+
+        double step = 100.0 / count;
+        int index = 90 / step; 
+
+		return elements[index];
+	}
+
+	const char * name() const override {
+		return "pct90";
+	}
+
+private:
+    int count = 0;
+    std::vector<double> elements;
+};
